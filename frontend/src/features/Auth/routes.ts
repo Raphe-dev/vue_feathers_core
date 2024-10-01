@@ -11,6 +11,7 @@ export default [
       {
         name: "auth-signup",
         path: "/auth/signup",
+        redirect: "/auth/login",
         component: () => import("src/features/Auth/components/SignupView.vue"),
       },
     ],

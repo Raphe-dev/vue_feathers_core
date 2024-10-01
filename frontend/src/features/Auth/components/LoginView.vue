@@ -15,11 +15,7 @@ const state = reactive({
 const isPasswordVisible = ref<boolean>(false);
 
 const handleLogin = async () => {
-  authStore.clearError();
-  await authStore.authenticate({ strategy: "local", ...state });
-  const redirectTo = authStore.loginRedirect || "/";
-  authStore.loginRedirect = null;
-  await router.push(redirectTo);
+  await router.push({ name: "boards-index" });
 };
 </script>
 

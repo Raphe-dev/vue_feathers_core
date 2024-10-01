@@ -1,13 +1,13 @@
 export default [
   {
-    path: "/features/client",
+    path: "/boards",
     component: () => import("../Global/layouts/MainLayout.vue"),
     meta: { public: true },
     children: [
       {
-        name: "feature-client",
+        name: "boards-index",
         path: "",
-        component: () => import("./components/VueClient.vue"),
+        component: () => import("./components/BoardsIndex.vue"),
       },
     ],
   },
