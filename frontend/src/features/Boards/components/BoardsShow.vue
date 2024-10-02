@@ -26,6 +26,7 @@ const createNewList = () => {
     id: id,
     createdAt: Date.now(),
     name: newListName.value,
+    tasks: {},
   };
   newListName.value = "";
 };
