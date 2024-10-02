@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { uid } from "uid";
 import { computed, reactive, ref } from "vue";
 
 import store from "@/modules/store";
@@ -10,10 +11,24 @@ const boards = computed(() => {
 });
 
 const addBoardOpen = ref(false);
+const newBoardName = ref("");
+const newBoardBackgroundImage = ref("https://cdn.quasar.dev/img/mountains.jpg");
 
 const openAddBoard = () => {
-  console.log("click");
   addBoardOpen.value = true;
+};
+
+const createNewBoard = () => {
+  const id = uid();
+  store.state.boards[id] = {
+    id: id,
+    name: newBoardName.value,
+    backgroundImage: newBoardBackgroundImage.value,
+    createdAt: Date.now(),
+    taskLists: {},
+  };
+  newBoardName.value = "";
+  newBoardBackgroundImage.value = "https://cdn.quasar.dev/img/mountains.jpg";
 };
 </script>
 
@@ -37,7 +52,33 @@ const openAddBoard = () => {
         :class="{ '-active': addBoardOpen }"
         @click.stop="openAddBoard"
       >
-        <q-card-section class="no-padding"> Add a board... </q-card-section>
+        <q-card-section class="no-padding">
+          <template v-if="!addBoardOpen">Add a board...</template>
+          <template v-else>
+            <q-form
+              class="q-gutter-md column"
+              @submit="createNewBoard"
+            >
+              <q-input
+                v-model="newBoardName"
+                label="Board name"
+                filled
+              />
+              <q-input
+                v-model="newBoardBackgroundImage"
+                label="Background Image"
+                filled
+              />
+              <q-btn
+                type="submit"
+                color="primary"
+                size="md"
+              >
+                Submit
+              </q-btn>
+            </q-form>
+          </template>
+        </q-card-section>
       </q-card>
     </div>
   </q-page>
@@ -50,7 +91,7 @@ const openAddBoard = () => {
   padding: 0.5rem 1rem;
   background-color: $grey-6;
   color: white;
-
+  overflow: hidden;
   transition: min-height 0.2s ease;
 
   &:hover {
@@ -61,7 +102,7 @@ const openAddBoard = () => {
   &.-active {
     background-color: $grey-2;
     color: black;
-    min-height: 10rem;
+    min-height: 13rem;
   }
 }
 </style>
