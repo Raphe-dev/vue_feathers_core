@@ -92,7 +92,7 @@ const createNewBoard = () => {
   background-color: $grey-6;
   color: white;
   overflow: hidden;
-  transition: min-height 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
     cursor: pointer;
