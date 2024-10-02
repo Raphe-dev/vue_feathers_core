@@ -111,7 +111,7 @@ const deleteTaskList = () => {
       </div>
     </q-card-section>
 
-    <q-card-section c>
+    <q-card-section>
       <draggable
         v-model="listItems"
         item-key="id"
