@@ -47,6 +47,7 @@ const createNewList = () => {
         v-for="(list, key) in board.taskLists"
         :key="key"
         :list="list"
+        :list-key="key"
         :board="board"
       />
 

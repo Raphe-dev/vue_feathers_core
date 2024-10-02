@@ -27,12 +27,12 @@ const state = reactive({
           name: "In Progress",
           tasks: {
             1: {
-              id: 3,
+              id: 1,
               content: "Task 3",
               order: 1,
             },
             2: {
-              id: 4,
+              id: 2,
               content: "Task 4",
               order: 2,
             },
