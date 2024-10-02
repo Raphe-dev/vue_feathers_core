@@ -5,7 +5,7 @@ const state = reactive({
     1: {
       id: 1,
       name: "Board 1",
-      backgroundImage: "url_to_image_1",
+      backgroundImage: "https://cdn.quasar.dev/img/mountains.jpg",
       createdAt: "2024-01-01T12:00:00Z",
       taskLists: {
         list1: {

@@ -14,7 +14,7 @@ const deleteBoard = () => {
     @click="$router.push({ name: 'boards-show', params: { id: props.board.id } })"
   >
     <img
-      src="https://cdn.quasar.dev/img/mountains.jpg"
+      :src="props.board.backgroundImage"
       class="board-card__img"
     />
     <div class="board-card__name">{{ props.board.name }}</div>
