@@ -61,6 +61,7 @@ const createNewBoard = () => {
             >
               <q-input
                 v-model="newBoardName"
+                required
                 label="Board name"
                 filled
               />
