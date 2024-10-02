@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import store from "@/modules/store";
-
 const props = defineProps(["board", "list", "listKey"]);
 
 const input = ref();
@@ -20,12 +18,24 @@ const addTaskList = () => {
   newTaskContent.value = "";
   input.value.focus();
 };
+
+const handleColorChange = (color) => {
+  const list = props.board.taskLists[props.listKey];
+  list.color = color;
+  console.log(props.list);
+};
+
+const deleteTaskList = () => {
+  const board = props.board;
+  delete board.taskLists[props.listKey];
+};
 </script>
 
 <template>
   <q-card
     class="tasklist"
     :style="`backgroundColor: ${props.list.color || ''}`"
+    @click="newTasklistOpen = false"
   >
     <q-card-section class="q-pa-sm">
       <div class="row items-center justify-between">
@@ -38,7 +48,65 @@ const addTaskList = () => {
           size="sm"
           flat
           icon="settings"
-        />
+        >
+          <q-popup-proxy>
+            <q-card class="q-pa-sm popup">
+              <q-card-section class="no-padding">
+                <q-item>
+                  <q-avatar
+                    color="primary"
+                    size="xl"
+                  />
+                  <div class="column q-pl-md">
+                    <b>Owner</b>
+                    <div>{{ props.list.createdAt }}</div>
+                  </div>
+                </q-item>
+                <q-item
+                  clickable
+                  :style="`backgroundColor: ${props.list.color || ''}`"
+                >
+                  <q-item-section avatar>
+                    <q-icon
+                      color="primary"
+                      name="palette"
+                    />
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label />
+                    <q-item-label caption>
+                      {{ props.list.color || `Background Color` }}
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-popup-proxy>
+                    <q-color
+                      :default-value="props.list.color"
+                      @change="handleColorChange"
+                    />
+                  </q-popup-proxy>
+                </q-item>
+
+                <q-item
+                  clickable
+                  @click="deleteTaskList"
+                >
+                  <q-item-section avatar>
+                    <q-icon
+                      color="red"
+                      name="delete"
+                    />
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label class="text-bold text-red"> DELETE CARD </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-card-section>
+            </q-card>
+          </q-popup-proxy>
+        </q-btn>
       </div>
     </q-card-section>
 
@@ -79,7 +147,7 @@ const addTaskList = () => {
     <q-item
       v-else
       clickable
-      @click="newTasklistOpen = true"
+      @click.stop="newTasklistOpen = true"
     >
       <q-item-section avatar>
         <q-icon
@@ -100,5 +168,9 @@ const addTaskList = () => {
 .tasklist {
   height: auto;
   min-width: 234px;
+}
+
+.popup {
+  width: 250px;
 }
 </style>

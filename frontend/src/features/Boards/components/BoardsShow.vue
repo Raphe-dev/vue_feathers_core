@@ -24,6 +24,7 @@ const createNewList = () => {
   const id = uid();
   board.taskLists[id] = {
     id: id,
+    createdAt: Date.now(),
     name: newListName.value,
   };
   newListName.value = "";
