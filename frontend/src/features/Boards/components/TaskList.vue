@@ -33,9 +33,9 @@ const deleteTaskList = () => {
 
 <template>
   <q-card
+    v-click-outside="(newTasklistOpen = false)"
     class="tasklist"
     :style="`backgroundColor: ${props.list.color || ''}`"
-    @click="newTasklistOpen = false"
   >
     <q-card-section class="q-pa-sm">
       <div class="row items-center justify-between">
@@ -110,7 +110,7 @@ const deleteTaskList = () => {
       </div>
     </q-card-section>
 
-    <q-card-section class="column q-gutter-sm">
+    <q-card-section class="q-gutter-sm">
       <q-card
         v-for="task in props.list.tasks"
         :key="task.id"
@@ -129,6 +129,7 @@ const deleteTaskList = () => {
           <q-input
             ref="input"
             v-model="newTaskContent"
+            required
             autofocus
             tabindex="0"
             label="Card content"
@@ -166,7 +167,7 @@ const deleteTaskList = () => {
 
 <style scoped lang="scss">
 .tasklist {
-  height: auto;
+  height: max-content;
   min-width: 234px;
 }
 

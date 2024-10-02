@@ -33,7 +33,8 @@ const createNewList = () => {
 
 <template>
   <q-page
-    class="column flex-start text-center"
+    :style="{ backgroundImage: `url(${board.backgroundImage})` }"
+    class="bg-cover column flex-start text-center"
     @click="addListOpen = false"
   >
     <div
@@ -94,6 +95,12 @@ const createNewList = () => {
   align-items: center;
   color: white;
   font-size: 1.25rem;
+}
+
+.bg-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .add-list {
