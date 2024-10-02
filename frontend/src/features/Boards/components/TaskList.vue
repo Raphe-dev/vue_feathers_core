@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
+import draggable from "vuedraggable";
 const props = defineProps(["board", "list", "listKey"]);
 
 const input = ref();
 const newTasklistOpen = ref(false);
 const newTaskContent = ref("");
+const listItems = ref(Object.values(props.list.tasks));
 
 const addTaskList = () => {
   const list = props.board.taskLists[props.listKey];
@@ -110,14 +111,19 @@ const deleteTaskList = () => {
       </div>
     </q-card-section>
 
-    <q-card-section class="q-gutter-sm">
-      <q-card
-        v-for="task in props.list.tasks"
-        :key="task.id"
-        class="q-pa-xs"
+    <q-card-section c>
+      <draggable
+        v-model="listItems"
+        item-key="id"
+        group="tasks"
+        class="q-gutter-sm"
       >
-        {{ task.content }}
-      </q-card>
+        <template #item="{ element }">
+          <q-card class="q-pa-xs">
+            {{ element.content }}
+          </q-card>
+        </template>
+      </draggable>
     </q-card-section>
 
     <q-item v-if="newTasklistOpen">
