@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { uid } from "uid";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import store from "@/modules/store";
+const input = ref();
 
 import TaskList from "./TaskList.vue";
 
@@ -16,6 +17,9 @@ const board = store.state.boards[id];
 const addListOpen = ref(false);
 const openAddList = () => {
   addListOpen.value = true;
+  nextTick(() => {
+    input.value.focus();
+  });
 };
 
 const newListName = ref("");
@@ -28,6 +32,7 @@ const createNewList = () => {
     name: newListName.value,
   };
   newListName.value = "";
+  input.value.focus();
 };
 </script>
 
@@ -67,6 +72,7 @@ const createNewList = () => {
               @submit="createNewList"
             >
               <q-input
+                ref="input"
                 v-model="newListName"
                 required
                 label="List name"

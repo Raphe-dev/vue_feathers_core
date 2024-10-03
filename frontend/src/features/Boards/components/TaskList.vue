@@ -39,7 +39,7 @@ const deleteTaskList = () => {
   >
     <q-card-section class="q-pa-sm">
       <div class="row items-center justify-between">
-        <div class="text-subtitle1 q">
+        <div class="text-subtitle1">
           {{ props.list.name }}
         </div>
 
