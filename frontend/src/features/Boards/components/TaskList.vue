@@ -1,22 +1,31 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import draggable from "vuedraggable";
 
+import store from "@/modules/store";
 const props = defineProps(["board", "list", "listKey"]);
 
 const input = ref();
 const newTasklistOpen = ref(false);
 const newTaskContent = ref("");
 
+const list = computed(() => {
+  return store.state.boards[props.board.id].taskLists[props.listKey];
+});
+
+const listItems = ref(Object.values(list.value.tasks || {}));
+
 const addTaskList = () => {
-  const list = props.board.taskLists[props.listKey];
-  const id = Object.keys(list.tasks).length + 1;
-  list.tasks[id] = {
+  const tasks = Object.keys(list.value.tasks);
+  const id = tasks.length ? tasks.length + 1 : 1;
+  list.value.tasks[id] = {
     id: id,
     order: id,
     content: newTaskContent.value,
   };
   newTaskContent.value = "";
   input.value.focus();
+  listItems.value = Object.values(list.value.tasks);
 };
 
 const handleColorChange = (color) => {
@@ -110,14 +119,19 @@ const deleteTaskList = () => {
       </div>
     </q-card-section>
 
-    <q-card-section class="q-gutter-sm">
-      <q-card
-        v-for="task in props.list.tasks"
-        :key="task.id"
-        class="q-pa-xs"
+    <q-card-section>
+      <draggable
+        v-model="listItems"
+        item-key="id"
+        group="tasks"
+        class="q-gutter-sm"
       >
-        {{ task.content }}
-      </q-card>
+        <template #item="{ element }">
+          <q-card class="q-pa-xs">
+            {{ element.content }}
+          </q-card>
+        </template>
+      </draggable>
     </q-card-section>
 
     <q-item v-if="newTasklistOpen">

@@ -24,7 +24,8 @@
     "quasar": "^2.14.2",
     "socket.io-client": "^4.7.4",
     "uid": "^2.0.2",
-    "vue": "^3.4.15"
+    "vue": "^3.4.15",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.7.3",
