@@ -9,6 +9,7 @@ const state = reactive({
       createdAt: "2024-01-01T12:00:00Z",
       taskLists: {
         list1: {
+          id: "list1",
           name: "Todo",
           tasks: {
             1: {
@@ -24,15 +25,16 @@ const state = reactive({
           },
         },
         list2: {
+          id: "list2",
           name: "In Progress",
           tasks: {
-            1: {
-              id: 1,
+            3: {
+              id: 3,
               content: "Task 3",
               order: 1,
             },
-            2: {
-              id: 2,
+            4: {
+              id: 4,
               content: "Task 4",
               order: 2,
             },

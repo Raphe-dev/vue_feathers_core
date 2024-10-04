@@ -1,46 +1,41 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { uid } from "uid";
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
 
-const props = defineProps(["board", "list", "listKey"]);
+import store from "@/modules/store";
 
-const input = ref();
+const route = useRoute();
 const newTasklistOpen = ref(false);
 const newTaskContent = ref("");
 
-const addTaskList = () => {
-  const list = props.board.taskLists[props.listKey];
-  const id = Object.keys(list.tasks).length + 1;
-  list.tasks[id] = {
+const list = defineModel();
+const board = computed(() => store.state.boards[route.params.id]);
+
+const addTaskList = (): void => {
+  const id: string = uid();
+  list.value.tasks[id] = {
     id: id,
     order: id,
     content: newTaskContent.value,
   };
   newTaskContent.value = "";
-  input.value.focus();
 };
 
-const handleColorChange = (color) => {
-  const list = props.board.taskLists[props.listKey];
-  list.color = color;
-  console.log(props.list);
-};
-
-const deleteTaskList = () => {
-  const board = props.board;
-  delete board.taskLists[props.listKey];
+const deleteTaskList = (): void => {
+  delete board.value.taskLists[list.value.id];
 };
 </script>
 
 <template>
   <q-card
-    v-click-outside="(newTasklistOpen = false)"
     class="tasklist"
-    :style="`backgroundColor: ${props.list.color || ''}`"
+    :style="`backgroundColor: ${list.color || ''}`"
   >
     <q-card-section class="q-pa-sm">
       <div class="row items-center justify-between">
         <div class="text-subtitle1">
-          {{ props.list.name }}
+          {{ list.name }}
         </div>
 
         <q-btn
@@ -59,12 +54,12 @@ const deleteTaskList = () => {
                   />
                   <div class="column q-pl-md">
                     <b>Owner</b>
-                    <div>{{ props.list.createdAt }}</div>
+                    <div>{{ list.createdAt }}</div>
                   </div>
                 </q-item>
                 <q-item
                   clickable
-                  :style="`backgroundColor: ${props.list.color || ''}`"
+                  :style="`backgroundColor: ${list.color || ''}`"
                 >
                   <q-item-section avatar>
                     <q-icon
@@ -76,15 +71,12 @@ const deleteTaskList = () => {
                   <q-item-section>
                     <q-item-label />
                     <q-item-label caption>
-                      {{ props.list.color || `Background Color` }}
+                      {{ list.color || `Background Color` }}
                     </q-item-label>
                   </q-item-section>
 
                   <q-popup-proxy>
-                    <q-color
-                      :default-value="props.list.color"
-                      @change="handleColorChange"
-                    />
+                    <q-color v-model="list.color" />
                   </q-popup-proxy>
                 </q-item>
 
@@ -112,11 +104,11 @@ const deleteTaskList = () => {
 
     <q-card-section class="q-gutter-sm">
       <q-card
-        v-for="task in props.list.tasks"
-        :key="task.id"
+        v-for="{ id, content } in list.tasks"
+        :key="id"
         class="q-pa-xs"
       >
-        {{ task.content }}
+        {{ content }}
       </q-card>
     </q-card-section>
 
@@ -127,20 +119,17 @@ const deleteTaskList = () => {
           @submit="addTaskList"
         >
           <q-input
-            ref="input"
             v-model="newTaskContent"
             required
             autofocus
-            tabindex="0"
             label="Card content"
             filled
           />
           <q-btn
             color="primary"
             type="submit"
-          >
-            Submit
-          </q-btn>
+            label="Submit"
+          />
         </q-form>
       </q-item-section>
     </q-item>
@@ -158,7 +147,6 @@ const deleteTaskList = () => {
       </q-item-section>
 
       <q-item-section>
-        <q-item-label />
         <q-item-label caption>New card</q-item-label>
       </q-item-section>
     </q-item>

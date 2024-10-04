@@ -1,38 +1,34 @@
 <script setup lang="ts">
 import { uid } from "uid";
-import { nextTick, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import store from "@/modules/store";
-const input = ref();
 
 import TaskList from "./TaskList.vue";
 
 const route = useRoute();
 
-const id = route.params.id;
+const id: string = route.params.id;
 
-const board = store.state.boards[id];
+const board: object = computed(() => store.state.boards[id]);
 
 const addListOpen = ref(false);
-const openAddList = () => {
+const openAddList = (): void => {
   addListOpen.value = true;
-  nextTick(() => {
-    input.value.focus();
-  });
 };
 
 const newListName = ref("");
 
-const createNewList = () => {
-  const id = uid();
-  board.taskLists[id] = {
+const createNewList = (): void => {
+  const id: string = uid();
+  board.value.taskLists[id] = {
     id: id,
     createdAt: Date.now(),
     name: newListName.value,
+    tasks: {},
   };
   newListName.value = "";
-  input.value.focus();
 };
 </script>
 
@@ -53,9 +49,7 @@ const createNewList = () => {
       <task-list
         v-for="(list, key) in board.taskLists"
         :key="key"
-        :list="list"
-        :list-key="key"
-        :board="board"
+        v-model="board.taskLists[key]"
       />
 
       <q-card
@@ -72,9 +66,9 @@ const createNewList = () => {
               @submit="createNewList"
             >
               <q-input
-                ref="input"
                 v-model="newListName"
                 required
+                autofocus
                 label="List name"
                 filled
               />
@@ -82,9 +76,8 @@ const createNewList = () => {
                 type="submit"
                 color="primary"
                 size="md"
-              >
-                Submit
-              </q-btn>
+                label="submit"
+              />
             </q-form>
           </template>
         </q-card-section>
