@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import store from "@/modules/store";
+import { state } from "@/modules/store";
 
-const props = defineProps(["board"]);
+const props = defineProps({ board: Object });
 
 const deleteBoard = () => {
-  delete store.state.boards[props.board.id];
+  delete state.boards[props.board.id];
 };
 </script>
 
@@ -15,6 +15,7 @@ const deleteBoard = () => {
   >
     <img
       :src="props.board.backgroundImage"
+      :alt="`${props.board.name}-cover-img`"
       class="board-card__img"
     />
     <div class="board-card__name">{{ props.board.name }}</div>

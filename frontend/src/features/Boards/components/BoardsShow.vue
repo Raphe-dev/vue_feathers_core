@@ -3,7 +3,7 @@ import { uid } from "uid";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
-import store from "@/modules/store";
+import { state } from "@/modules/store";
 
 import TaskList from "./TaskList.vue";
 
@@ -11,7 +11,7 @@ const route = useRoute();
 
 const id: string = route.params.id;
 
-const board: object = computed(() => store.state.boards[id]);
+const board = computed(() => state.boards[id]);
 
 const addListOpen = ref(false);
 const openAddList = (): void => {

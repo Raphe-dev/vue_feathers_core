@@ -3,14 +3,14 @@ import { uid } from "uid";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
-import store from "@/modules/store";
+import { state } from "@/modules/store";
 
 const route = useRoute();
 const newTasklistOpen = ref(false);
 const newTaskContent = ref("");
 
 const list = defineModel();
-const board = computed(() => store.state.boards[route.params.id]);
+const board = computed(() => state.boards[route.params.id]);
 
 const addTaskList = (): void => {
   const id: string = uid();

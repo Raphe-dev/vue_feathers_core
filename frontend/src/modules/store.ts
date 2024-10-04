@@ -45,6 +45,4 @@ const state = reactive({
   },
 });
 
-export default {
-  state,
-};
+export { state };

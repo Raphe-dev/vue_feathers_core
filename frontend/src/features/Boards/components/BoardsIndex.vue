@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import { uid } from "uid";
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 
-import store from "@/modules/store";
+import { state } from "@/modules/store";
 
 import BoardCard from "./BoardCard.vue";
-
-const boards = computed(() => {
-  return store.state.boards;
-});
 
 const addBoardOpen = ref(false);
 const newBoardName = ref("");
 const newBoardBackgroundImage = ref("https://cdn.quasar.dev/img/mountains.jpg");
 
-const openAddBoard = () => {
-  addBoardOpen.value = true;
-};
+const boards = computed(() => state.boards);
 
-const createNewBoard = () => {
-  const id = uid();
-  store.state.boards[id] = {
+const createNewBoard = (): void => {
+  const id: string = uid();
+  state.boards[id] = {
     id: id,
     name: newBoardName.value,
     backgroundImage: newBoardBackgroundImage.value,
@@ -50,7 +44,7 @@ const createNewBoard = () => {
         flat
         class="add-board flex flex-center justify-center"
         :class="{ '-active': addBoardOpen }"
-        @click.stop="openAddBoard"
+        @click.stop="addBoardOpen = true"
       >
         <q-card-section class="no-padding">
           <template v-if="!addBoardOpen">Add a board...</template>
@@ -62,6 +56,7 @@ const createNewBoard = () => {
               <q-input
                 v-model="newBoardName"
                 required
+                autofocus
                 label="Board name"
                 filled
               />
@@ -74,9 +69,8 @@ const createNewBoard = () => {
                 type="submit"
                 color="primary"
                 size="md"
-              >
-                Submit
-              </q-btn>
+                label="Submit"
+              />
             </q-form>
           </template>
         </q-card-section>
