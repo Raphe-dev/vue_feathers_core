@@ -176,6 +176,7 @@ const deleteTaskList = (): void => {
 
 .popup {
   width: 250px;
+  background: white !important;
 }
 
 .auto-invert {

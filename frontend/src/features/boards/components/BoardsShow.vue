@@ -46,44 +46,48 @@ const createNewList = (): void => {
       {{ board.name }}
     </div>
 
-    <div class="row q-gutter-md q-pa-md">
-      <task-list-component
+    <div class="row q-col-gutter-md q-pa-md">
+      <div
         v-for="(list, key) in board.columns"
         :key="key"
-        v-model="board.columns[key]"
-      />
-
-      <q-card
-        :flat="!addListOpen"
-        class="add-list flex flex-center justify-center"
-        :class="{ '-active': addListOpen }"
-        @click.stop="addListOpen = true"
+        class="col-xs-12 col-sm-6 col-md-3"
       >
-        <q-card-section class="no-padding">
-          <template v-if="!addListOpen">Add a list...</template>
-          <template v-else>
-            <q-form
-              class="q-gutter-md column"
-              @submit="createNewList"
-            >
-              <q-input
-                ref="input"
-                v-model="newListName"
-                required
-                autofocus
-                label="List name"
-                filled
-              />
-              <q-btn
-                type="submit"
-                color="primary"
-                size="md"
-                label="submit"
-              />
-            </q-form>
-          </template>
-        </q-card-section>
-      </q-card>
+        <task-list-component v-model="board.columns[key]" />
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <q-card
+          :flat="!addListOpen"
+          class="add-list flex flex-center justify-center"
+          :class="{ '-active': addListOpen }"
+          @click.stop="addListOpen = true"
+        >
+          <q-card-section class="no-padding fit">
+            <template v-if="!addListOpen">Add a list...</template>
+            <template v-else>
+              <q-form
+                class="q-gutter-md column"
+                @submit="createNewList"
+              >
+                <q-input
+                  ref="input"
+                  v-model="newListName"
+                  required
+                  autofocus
+                  label="List name"
+                  filled
+                />
+                <q-btn
+                  type="submit"
+                  color="primary"
+                  size="md"
+                  label="submit"
+                />
+              </q-form>
+            </template>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -112,7 +116,6 @@ const createNewList = (): void => {
   color: white;
   overflow: hidden;
   transition: all 0.2s ease;
-  width: 234px;
 
   &:hover {
     cursor: pointer;
