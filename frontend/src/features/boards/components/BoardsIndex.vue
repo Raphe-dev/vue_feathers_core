@@ -3,26 +3,31 @@ import { uid } from "uid";
 import { computed, ref } from "vue";
 
 import { state } from "@/modules/store";
+import { Board } from "@f/boards/types";
 
 import BoardCard from "./BoardCard.vue";
 
-const addBoardOpen = ref(false);
-const newBoardName = ref("");
-const newBoardBackgroundImage = ref("https://cdn.quasar.dev/img/mountains.jpg");
+const input = ref();
+
+const addBoardOpen = ref<boolean>(false);
+const newBoardName = ref<string>("");
+const newBoardBackgroundImage = ref<string>("https://cdn.quasar.dev/img/mountains.jpg");
 
 const boards = computed(() => state.boards);
 
 const createNewBoard = (): void => {
   const id: string = uid();
+
   state.boards[id] = {
     id: id,
     name: newBoardName.value,
     backgroundImage: newBoardBackgroundImage.value,
     createdAt: Date.now(),
     taskLists: {},
-  };
+  } as Board;
   newBoardName.value = "";
   newBoardBackgroundImage.value = "https://cdn.quasar.dev/img/mountains.jpg";
+  input.value.focus();
 };
 </script>
 
@@ -33,12 +38,21 @@ const createNewBoard = (): void => {
     @click="addBoardOpen = false"
   >
     <div class="row q-gutter-md">
-      <board-card
-        v-for="(board, key) in boards"
-        :key="key"
-        :board="board"
-        class="col"
-      />
+      <transition-group
+        appear
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        <div
+          v-for="(board, key) in boards"
+          :key="key"
+        >
+          <board-card
+            v-model="boards[key]"
+            class="col"
+          />
+        </div>
+      </transition-group>
 
       <q-card
         flat
@@ -54,6 +68,7 @@ const createNewBoard = (): void => {
               @submit="createNewBoard"
             >
               <q-input
+                ref="input"
                 v-model="newBoardName"
                 required
                 autofocus

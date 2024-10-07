@@ -1,6 +1,8 @@
 import { reactive } from "vue";
 
-const state = reactive({
+import { Boards } from "@f/boards/types";
+
+const state = reactive<{ boards: Boards }>({
   boards: {
     1: {
       id: 1,
@@ -11,6 +13,7 @@ const state = reactive({
         list1: {
           id: "list1",
           name: "Todo",
+          foo: 1,
           tasks: {
             1: {
               id: 1,

@@ -2,9 +2,9 @@
 import { useQuasar } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 
-import { useAuthStore } from "@/features/Auth/store";
+import { useAuthStore } from "@f/auth/store";
 
-import UserAvatar from "@f/Auth/components/UserAvatar.vue";
+import UserAvatar from "@f/auth/components/UserAvatar.vue";
 
 const $q = useQuasar();
 const router = useRouter();

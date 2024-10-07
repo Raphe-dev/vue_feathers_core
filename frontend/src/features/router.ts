@@ -16,7 +16,7 @@ const buildRoutes = async (): Promise<RouteRecordRaw[]> => {
     // Fallback to 404 page. This should always be last.
     {
       path: "/:catchAll(.*)*",
-      component: () => import("src/features/Global/components/ErrorNotFoundView.vue"),
+      component: () => import("@f/global/components/ErrorNotFoundView.vue"),
     },
   ];
 };

@@ -8,9 +8,9 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { useFeathersService } from "@/feathers-client";
-import { useAuthStore } from "@/features/Auth/store";
+import { useAuthStore } from "@f/auth/store";
 
-import UserForm from "@f/Auth/components/UserForm.vue";
+import UserForm from "@f/auth/components/UserForm.vue";
 
 const $q = useQuasar();
 const router = useRouter();

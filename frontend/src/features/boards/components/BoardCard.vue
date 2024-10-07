@@ -1,38 +1,48 @@
 <script setup lang="ts">
-import { state } from "@/modules/store";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 
-const props = defineProps({ board: Object });
+import { state } from "@/modules/store";
+import { Board } from "@f/boards/types";
+import { formatTimeSince } from "@f/utils/date";
+const router = useRouter();
+
+const board = defineModel<Board>({ required: true });
 
 const deleteBoard = () => {
-  delete state.boards[props.board.id];
+  delete state.boards[board.value.id];
 };
+
+const since = computed<string>(() => formatTimeSince(new Date(board.value.createdAt)));
 </script>
 
 <template>
   <q-card
+    v-ripple.early="{ color: 'grey-1' }"
+    transition-hide="slide-right"
     class="board-card"
-    @click="$router.push({ name: 'boards-show', params: { id: props.board.id } })"
+    @click="router.push({ name: 'boards-show', params: { id: board.id } })"
   >
     <img
-      :src="props.board.backgroundImage"
-      :alt="`${props.board.name}-cover-img`"
+      :src="board.backgroundImage"
+      :alt="`${board.name}-cover-img`"
       class="board-card__img"
     />
-    <div class="board-card__name">{{ props.board.name }}</div>
+    <div class="board-card__name">{{ board.name }}</div>
     <q-card-section class="q-pa-sm row justify-between items-center">
       <div class="row items-center q-gutter-sm">
         <q-avatar
           size="md"
           color="primary"
         />
-        <span>created at {{ props.board.createdAt }}</span>
+        <span>{{ since }}</span>
       </div>
       <q-btn
         round
         padding="xs"
         color="red"
         icon="delete"
-        @click="deleteBoard"
+        @click.stop="deleteBoard"
       />
     </q-card-section>
   </q-card>

@@ -6,10 +6,10 @@ import { useQuasar } from "quasar";
 import { type Ref, ref } from "vue";
 
 import { useFeathersService } from "@/feathers-client";
-import { useAuthStore } from "@f/Auth/store";
+import { useAuthStore } from "@f/auth/store";
 
-import UserAvatar from "@f/Auth/components/UserAvatar.vue";
-import UserForm from "@f/Auth/components/UserForm.vue";
+import UserAvatar from "@f/auth/components/UserAvatar.vue";
+import UserForm from "@f/auth/components/UserForm.vue";
 
 const props = defineProps<{ user: ServiceInstance<UserType> }>();
 const $q = useQuasar();

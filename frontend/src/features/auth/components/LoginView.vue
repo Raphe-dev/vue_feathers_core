@@ -2,8 +2,8 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { useAuthStore } from "@/features/Auth/store";
-import { checkRequiredString } from "@/features/Global/validation";
+import { useAuthStore } from "@f/auth/store";
+import { checkRequiredString } from "@f/global/validation";
 
 const router = useRouter();
 

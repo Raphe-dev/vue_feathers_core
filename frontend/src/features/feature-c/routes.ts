@@ -1,7 +1,7 @@
 export default [
   {
     path: "/features/c",
-    component: () => import("../Global/layouts/MainLayout.vue"),
+    component: () => import("@f/global/layouts/MainLayout.vue"),
     children: [
       {
         name: "feature-c",

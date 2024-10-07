@@ -1,29 +1,29 @@
 export default [
   {
     path: "/auth",
-    component: () => import("../Global/layouts/MainLayout.vue"),
+    component: () => import("@f/global/layouts/MainLayout.vue"),
     children: [
       {
         name: "auth-login",
         path: "/auth/login",
-        component: () => import("src/features/Auth/components/LoginView.vue"),
+        component: () => import("@f/auth/components/LoginView.vue"),
       },
       {
         name: "auth-signup",
         path: "/auth/signup",
         redirect: "/auth/login",
-        component: () => import("src/features/Auth/components/SignupView.vue"),
+        component: () => import("@f/auth/components/SignupView.vue"),
       },
     ],
   },
   {
     path: "/users",
-    component: () => import("../Global/layouts/MainLayout.vue"),
+    component: () => import("@f/global/layouts/MainLayout.vue"),
     children: [
       {
         name: "user-list",
         path: "/users/",
-        component: () => import("src/features/Auth/components/UserListView.vue"),
+        component: () => import("@f/auth/components/UserListView.vue"),
       },
     ],
   },

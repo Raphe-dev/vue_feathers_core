@@ -6,7 +6,7 @@ export default [
       {
         name: "index",
         path: "",
-        component: () => import("src/features/Global/components/IndexView.vue"),
+        component: () => import("@f/global/components/IndexView.vue"),
       },
     ],
   },

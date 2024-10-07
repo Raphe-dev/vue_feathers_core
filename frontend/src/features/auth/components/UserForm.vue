@@ -4,7 +4,7 @@ import type { User } from "project-template-backend";
 
 import { ref } from "vue";
 
-import { checkEmail, checkRequiredString } from "@f/Global/validation";
+import { checkEmail, checkRequiredString } from "@f/global/validation";
 
 // TODO: Type this properly!
 const props = defineProps<{ user: AnyData }>();

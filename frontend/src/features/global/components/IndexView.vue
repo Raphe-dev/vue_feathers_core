@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import bewaveLogoUrl from "@/assets/images/logos/bewave.svg";
-import { useAuthStore } from "@f/Auth/store";
+import { useAuthStore } from "@f/auth/store";
 
 const auth = useAuthStore();
 

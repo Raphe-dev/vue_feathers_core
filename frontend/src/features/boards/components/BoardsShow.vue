@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import { state } from "@/modules/store";
+import { Board } from "@f/boards/types";
 
 import TaskList from "./TaskList.vue";
 
@@ -27,7 +28,7 @@ const createNewList = (): void => {
     createdAt: Date.now(),
     name: newListName.value,
     tasks: {},
-  };
+  } as Board;
   newListName.value = "";
 };
 </script>

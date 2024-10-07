@@ -1,7 +1,7 @@
 export default [
   {
     path: "/boards",
-    component: () => import("../Global/layouts/MainLayout.vue"),
+    component: () => import("@f/global/layouts/MainLayout.vue"),
     meta: { public: true },
     children: [
       {

@@ -6,8 +6,8 @@ import { computed, type Ref, ref } from "vue";
 
 import { useFeathersService } from "@/feathers-client";
 
-import UserForm from "@f/Auth/components/UserForm.vue";
-import UserItem from "@f/Auth/components/UserItem.vue";
+import UserForm from "@f/auth/components/UserForm.vue";
+import UserItem from "@f/auth/components/UserItem.vue";
 
 const User = useFeathersService("users");
 
