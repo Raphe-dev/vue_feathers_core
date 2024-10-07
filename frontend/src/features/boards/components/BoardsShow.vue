@@ -11,6 +11,7 @@ import TaskListComponent from "./TaskList.vue";
 const router = useRouter();
 
 const props = defineProps<{ id: string }>();
+const input = ref();
 
 const board = computed<Board>(() => state.boards[props.id]);
 
@@ -28,6 +29,7 @@ const createNewList = (): void => {
     color: "#fff",
   };
   newListName.value = "";
+  input.value.focus();
 };
 </script>
 
@@ -65,6 +67,7 @@ const createNewList = (): void => {
               @submit="createNewList"
             >
               <q-input
+                ref="input"
                 v-model="newListName"
                 required
                 autofocus

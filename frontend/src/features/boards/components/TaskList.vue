@@ -7,6 +7,7 @@ import { state } from "@/modules/store";
 import { Board, Column } from "@f/boards/types";
 import { formatTimeSince } from "@f/utils/date";
 
+const input = ref();
 const route = useRoute();
 const newTasklistOpen = ref(false);
 const newTaskContent = ref("");
@@ -23,6 +24,7 @@ const addTaskList = (): void => {
     content: newTaskContent.value,
   };
   newTaskContent.value = "";
+  input.value.focus();
 };
 
 const deleteTaskList = (): void => {
@@ -126,7 +128,9 @@ const deleteTaskList = (): void => {
           @submit="addTaskList"
         >
           <q-input
+            ref="input"
             v-model="newTaskContent"
+            class="auto-invert"
             required
             autofocus
             label="Card content"
