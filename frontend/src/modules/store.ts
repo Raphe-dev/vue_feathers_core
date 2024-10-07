@@ -13,6 +13,7 @@ const state = reactive<{ boards: Boards }>({
         list1: {
           id: "list1",
           name: "Todo",
+          color: "#fff",
           foo: 1,
           tasks: {
             1: {
@@ -30,6 +31,7 @@ const state = reactive<{ boards: Boards }>({
         list2: {
           id: "list2",
           name: "In Progress",
+          color: "#fff",
           tasks: {
             3: {
               id: 3,

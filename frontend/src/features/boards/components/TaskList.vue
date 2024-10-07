@@ -4,26 +4,29 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import { state } from "@/modules/store";
+import { Board, Column } from "@f/boards/types";
+import { formatTimeSince } from "@f/utils/date";
 
 const route = useRoute();
 const newTasklistOpen = ref(false);
 const newTaskContent = ref("");
 
-const list = defineModel();
-const board = computed(() => state.boards[route.params.id]);
+const list = defineModel<Column>({ required: true });
+const board = computed<Board>(() => state.boards[route.params.id.toString()]);
+const since = computed<string>(() => formatTimeSince(new Date(list.value.createdAt || Date.now())));
 
 const addTaskList = (): void => {
   const id: string = uid();
   list.value.tasks[id] = {
     id: id,
-    order: id,
+    order: Object.keys(list.value.tasks).length + 1,
     content: newTaskContent.value,
   };
   newTaskContent.value = "";
 };
 
 const deleteTaskList = (): void => {
-  delete board.value.taskLists[list.value.id];
+  delete board.value.columns[list.value.id];
 };
 </script>
 
@@ -34,7 +37,7 @@ const deleteTaskList = (): void => {
   >
     <q-card-section class="q-pa-sm">
       <div class="row items-center justify-between">
-        <div class="text-subtitle1">
+        <div class="text-subtitle1 auto-invert">
           {{ list.name }}
         </div>
 
@@ -54,7 +57,7 @@ const deleteTaskList = (): void => {
                   />
                   <div class="column q-pl-md">
                     <b>Owner</b>
-                    <div>{{ list.createdAt }}</div>
+                    <div>{{ since }}</div>
                   </div>
                 </q-item>
                 <q-item
@@ -68,9 +71,13 @@ const deleteTaskList = (): void => {
                     />
                   </q-item-section>
 
-                  <q-item-section>
+                  <q-item-section :style="`backgroundColor: ${list.color || ''}`">
                     <q-item-label />
-                    <q-item-label caption>
+
+                    <q-item-label
+                      class="auto-invert"
+                      caption
+                    >
                       {{ list.color || `Background Color` }}
                     </q-item-label>
                   </q-item-section>
@@ -147,7 +154,12 @@ const deleteTaskList = (): void => {
       </q-item-section>
 
       <q-item-section>
-        <q-item-label caption>New card</q-item-label>
+        <q-item-label
+          caption
+          class="auto-invert"
+        >
+          New card
+        </q-item-label>
       </q-item-section>
     </q-item>
   </q-card>
@@ -161,5 +173,23 @@ const deleteTaskList = (): void => {
 
 .popup {
   width: 250px;
+}
+
+.auto-invert {
+  transition: 0s ease;
+  height: inherit;
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  filter: invert(1) grayscale(1) contrast(9);
+}
+
+*:has(.auto-invert) {
+  background: inherit;
+}
+
+.q-item {
+  transition: 0s ease;
 }
 </style>

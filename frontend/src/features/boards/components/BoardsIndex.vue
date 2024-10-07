@@ -3,7 +3,6 @@ import { uid } from "uid";
 import { computed, ref } from "vue";
 
 import { state } from "@/modules/store";
-import { Board } from "@f/boards/types";
 
 import BoardCard from "./BoardCard.vue";
 
@@ -24,7 +23,7 @@ const createNewBoard = (): void => {
     backgroundImage: newBoardBackgroundImage.value,
     createdAt: Date.now(),
     columns: {},
-  } as Board;
+  };
   newBoardName.value = "";
   newBoardBackgroundImage.value = "https://cdn.quasar.dev/img/mountains.jpg";
   input.value.focus();

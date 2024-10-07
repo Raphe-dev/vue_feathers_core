@@ -10,6 +10,8 @@ export interface Column {
   id: string;
   name: string;
   tasks: Tasks;
+  createdAt: string | number;
+  color: string;
 }
 
 export type Columns = Record<string, Column>;

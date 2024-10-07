@@ -4,7 +4,7 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { state } from "@/modules/store";
-import { Board, Column } from "@f/boards/types";
+import { Board } from "@f/boards/types";
 
 import TaskListComponent from "./TaskList.vue";
 
@@ -16,16 +16,17 @@ const board = computed<Board>(() => state.boards[props.id]);
 
 const addListOpen = ref<boolean>(false);
 
-const newListName = ref<string>("");
+let newListName = ref<string>("");
 
 const createNewList = (): void => {
   const id: string = uid();
   board.value.columns[id] = {
     id: id,
-    createdAt: Date.now(),
     name: newListName.value,
     tasks: {},
-  } as Column;
+    createdAt: Date.now(),
+    color: "#fff",
+  };
   newListName.value = "";
 };
 </script>
@@ -51,7 +52,7 @@ const createNewList = (): void => {
       />
 
       <q-card
-        flat
+        :flat="!addListOpen"
         class="add-list flex flex-center justify-center"
         :class="{ '-active': addListOpen }"
         @click.stop="addListOpen = true"
@@ -87,7 +88,7 @@ const createNewList = (): void => {
 <style scoped lang="scss">
 .bar {
   height: 3rem;
-  background-color: $grey-6;
+  background-color: #9e9e9e80;
   display: flex;
   align-items: center;
   color: white;

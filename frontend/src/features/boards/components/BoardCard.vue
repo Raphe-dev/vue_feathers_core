@@ -16,7 +16,7 @@ const since = computed<string>(() => formatTimeSince(new Date(board.value.create
   <q-card
     v-ripple.early="{ color: 'grey-1' }"
     transition-hide="slide-right"
-    class="board-card"
+    class="board-card cursor-pointer"
     @click="router.push({ name: 'boards-show', params: { id: board.id } })"
   >
     <img
