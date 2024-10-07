@@ -9,10 +9,6 @@ const router = useRouter();
 
 const board = defineModel<Board>({ required: true });
 
-const deleteBoard = () => {
-  delete state.boards[board.value.id];
-};
-
 const since = computed<string>(() => formatTimeSince(new Date(board.value.createdAt)));
 </script>
 
@@ -42,7 +38,7 @@ const since = computed<string>(() => formatTimeSince(new Date(board.value.create
         padding="xs"
         color="red"
         icon="delete"
-        @click.stop="deleteBoard"
+        @click.stop="() => delete state.boards[board.id]"
       />
     </q-card-section>
   </q-card>

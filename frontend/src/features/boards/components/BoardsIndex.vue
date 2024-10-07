@@ -23,7 +23,7 @@ const createNewBoard = (): void => {
     name: newBoardName.value,
     backgroundImage: newBoardBackgroundImage.value,
     createdAt: Date.now(),
-    taskLists: {},
+    columns: {},
   } as Board;
   newBoardName.value = "";
   newBoardBackgroundImage.value = "https://cdn.quasar.dev/img/mountains.jpg";
@@ -55,7 +55,7 @@ const createNewBoard = (): void => {
       </transition-group>
 
       <q-card
-        flat
+        :flat="!addBoardOpen"
         class="add-board flex flex-center justify-center"
         :class="{ '-active': addBoardOpen }"
         @click.stop="addBoardOpen = true"

@@ -12,6 +12,7 @@ export default [
       {
         name: "boards-show",
         path: "/boards/:id",
+        props: true,
         component: () => import("./components/BoardsShow.vue"),
       },
     ],

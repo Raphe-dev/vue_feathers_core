@@ -1,6 +1,6 @@
-import { useI18n } from "vue-i18n";
+import { i18n } from "@/boot/i18n";
 
-const i18n = useI18n();
+const I18n = i18n;
 
 type Datelike = Date | string | number;
 
@@ -42,7 +42,7 @@ export const formatDateTimeForBackend = (date?: Datelike | null): string | null 
  * Format a date object as localized time
  */
 export const formatTime = (date: Datelike, withSeconds = false): string => {
-  const { d } = i18n.global;
+  const { d } = I18n.global;
   return d(parseDate(date), { timeStyle: withSeconds ? "medium" : "short" });
 };
 
@@ -65,7 +65,7 @@ export const formatDateTime = (date: Datelike, withSeconds = false): string => {
  * Format a time interval in a humanized manner
  */
 export const formatTimeSince = (date: Datelike): string => {
-  const timeFormatter = new Intl.RelativeTimeFormat(i18n.global.locale.value || "en", { numeric: "auto" });
+  const timeFormatter = new Intl.RelativeTimeFormat(I18n.global.locale.value || "en", { numeric: "auto" });
   const dateObj = parseDate(date);
   let duration = (dateObj.getTime() - new Date().getTime()) / 1000;
   for (const [amount, span] of TIME_SPANS) {

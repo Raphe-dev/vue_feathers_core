@@ -1,34 +1,31 @@
 <script setup lang="ts">
 import { uid } from "uid";
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { state } from "@/modules/store";
-import { Board } from "@f/boards/types";
+import { Board, Column } from "@f/boards/types";
 
-import TaskList from "./TaskList.vue";
+import TaskListComponent from "./TaskList.vue";
 
-const route = useRoute();
+const router = useRouter();
 
-const id: string = route.params.id;
+const props = defineProps<{ id: string }>();
 
-const board = computed(() => state.boards[id]);
+const board = computed<Board>(() => state.boards[props.id]);
 
-const addListOpen = ref(false);
-const openAddList = (): void => {
-  addListOpen.value = true;
-};
+const addListOpen = ref<boolean>(false);
 
-const newListName = ref("");
+const newListName = ref<string>("");
 
 const createNewList = (): void => {
   const id: string = uid();
-  board.value.taskLists[id] = {
+  board.value.columns[id] = {
     id: id,
     createdAt: Date.now(),
     name: newListName.value,
     tasks: {},
-  } as Board;
+  } as Column;
   newListName.value = "";
 };
 </script>
@@ -41,23 +38,23 @@ const createNewList = (): void => {
   >
     <div
       class="bar q-pa-md cursor-pointer"
-      @click="$router.push({ name: 'boards-index' })"
+      @click="router.push({ name: 'boards-index' })"
     >
       {{ board.name }}
     </div>
 
     <div class="row q-gutter-md q-pa-md">
-      <task-list
-        v-for="(list, key) in board.taskLists"
+      <task-list-component
+        v-for="(list, key) in board.columns"
         :key="key"
-        v-model="board.taskLists[key]"
+        v-model="board.columns[key]"
       />
 
       <q-card
         flat
         class="add-list flex flex-center justify-center"
         :class="{ '-active': addListOpen }"
-        @click.stop="openAddList"
+        @click.stop="addListOpen = true"
       >
         <q-card-section class="no-padding">
           <template v-if="!addListOpen">Add a list...</template>

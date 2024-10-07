@@ -9,7 +9,7 @@ const state = reactive<{ boards: Boards }>({
       name: "Board 1",
       backgroundImage: "https://cdn.quasar.dev/img/mountains.jpg",
       createdAt: "2024-01-01T12:00:00Z",
-      taskLists: {
+      columns: {
         list1: {
           id: "list1",
           name: "Todo",

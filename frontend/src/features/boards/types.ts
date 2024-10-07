@@ -4,18 +4,22 @@ export interface Task {
   order: number;
 }
 
-export interface TaskList {
+export type Tasks = Record<string, Task>;
+
+export interface Column {
   id: string;
   name: string;
-  tasks: Record<number, Task>;
+  tasks: Tasks;
 }
+
+export type Columns = Record<string, Column>;
 
 export interface Board {
   id: string;
   name: string;
   backgroundImage: string;
   createdAt: string | number;
-  taskLists: Record<string, TaskList>;
+  columns: Columns;
 }
 
 export type Boards = Record<string, Board>;
