@@ -47,67 +47,70 @@ const deleteTaskList = (): void => {
           round
           size="sm"
           flat
-          icon="settings"
         >
-          <q-popup-proxy>
-            <q-card class="q-pa-sm popup">
-              <q-card-section class="no-padding">
-                <q-item>
-                  <q-avatar
-                    color="primary"
-                    size="xl"
-                  />
-                  <div class="column q-pl-md">
-                    <b>Owner</b>
-                    <div>{{ since }}</div>
-                  </div>
-                </q-item>
-                <q-item
-                  clickable
-                  :style="`backgroundColor: ${list.color || ''}`"
-                >
-                  <q-item-section avatar>
-                    <q-icon
-                      color="primary"
-                      name="palette"
-                    />
-                  </q-item-section>
-
-                  <q-item-section :style="`backgroundColor: ${list.color || ''}`">
-                    <q-item-label />
-
-                    <q-item-label
-                      class="auto-invert"
-                      caption
-                    >
-                      {{ list.color || `Background Color` }}
-                    </q-item-label>
-                  </q-item-section>
-
-                  <q-popup-proxy>
-                    <q-color v-model="list.color" />
-                  </q-popup-proxy>
-                </q-item>
-
-                <q-item
-                  clickable
-                  @click="deleteTaskList"
-                >
-                  <q-item-section avatar>
-                    <q-icon
-                      color="red"
-                      name="delete"
-                    />
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label class="text-bold text-red"> DELETE CARD </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-card-section>
-            </q-card>
-          </q-popup-proxy>
+          <q-icon
+            style="color: red"
+            name="settings"
+          />
         </q-btn>
+        <q-popup-proxy>
+          <q-card class="q-pa-sm popup">
+            <q-card-section class="no-padding">
+              <q-item>
+                <q-avatar
+                  color="primary"
+                  size="xl"
+                />
+                <div class="column q-pl-md">
+                  <b>Owner</b>
+                  <div>{{ since }}</div>
+                </div>
+              </q-item>
+              <q-item
+                clickable
+                :style="`backgroundColor: ${list.color || ''}`"
+              >
+                <q-item-section avatar>
+                  <q-icon
+                    color="primary"
+                    name="palette"
+                  />
+                </q-item-section>
+
+                <q-item-section :style="`backgroundColor: ${list.color || ''}`">
+                  <q-item-label />
+
+                  <q-item-label
+                    class="auto-invert"
+                    caption
+                  >
+                    {{ list.color || `Background Color` }}
+                  </q-item-label>
+                </q-item-section>
+
+                <q-popup-proxy>
+                  <q-color v-model="list.color" />
+                </q-popup-proxy>
+              </q-item>
+
+              <q-item
+                clickable
+                @click="deleteTaskList"
+              >
+                <q-item-section avatar>
+                  <q-icon
+                    color="red"
+                    name="delete"
+                  />
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label class="text-bold text-red"> DELETE CARD </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-card-section>
+          </q-card>
+        </q-popup-proxy>
       </div>
     </q-card-section>
 
@@ -130,7 +133,6 @@ const deleteTaskList = (): void => {
           <q-input
             ref="input"
             v-model="newTaskContent"
-            class="auto-invert"
             required
             autofocus
             label="Card content"
@@ -173,6 +175,7 @@ const deleteTaskList = (): void => {
 .tasklist {
   height: max-content;
   min-width: 234px;
+  flex: 1;
 }
 
 .popup {
