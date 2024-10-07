@@ -48,10 +48,7 @@ const deleteTaskList = (): void => {
           size="sm"
           flat
         >
-          <q-icon
-            style="color: red"
-            name="settings"
-          />
+          <q-icon name="settings" />
         </q-btn>
         <q-popup-proxy>
           <q-card class="q-pa-sm popup">
@@ -175,7 +172,6 @@ const deleteTaskList = (): void => {
 .tasklist {
   height: max-content;
   min-width: 234px;
-  flex: 1;
 }
 
 .popup {
