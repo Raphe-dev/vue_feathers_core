@@ -36,7 +36,7 @@ const createNewBoard = (): void => {
     class="flex flex-start text-center"
     @click="addBoardOpen = false"
   >
-    <div class="row q-gutter-md">
+    <div class="row q-col-gutter-md fit">
       <transition-group
         appear
         enter-active-class="animated fadeIn"
@@ -45,50 +45,50 @@ const createNewBoard = (): void => {
         <div
           v-for="(board, key) in boards"
           :key="key"
+          class="col-xs-12 col-sm-6 col-md-3"
         >
-          <board-card
-            v-model="boards[key]"
-            class="col"
-          />
+          <board-card v-model="boards[key]" />
         </div>
       </transition-group>
 
-      <q-card
-        :flat="!addBoardOpen"
-        class="add-board flex flex-center justify-center"
-        :class="{ '-active': addBoardOpen }"
-        @click.stop="addBoardOpen = true"
-      >
-        <q-card-section class="no-padding">
-          <template v-if="!addBoardOpen">Add a board...</template>
-          <template v-else>
-            <q-form
-              class="q-gutter-md column"
-              @submit="createNewBoard"
-            >
-              <q-input
-                ref="input"
-                v-model="newBoardName"
-                required
-                autofocus
-                label="Board name"
-                filled
-              />
-              <q-input
-                v-model="newBoardBackgroundImage"
-                label="Background Image"
-                filled
-              />
-              <q-btn
-                type="submit"
-                color="primary"
-                size="md"
-                label="Submit"
-              />
-            </q-form>
-          </template>
-        </q-card-section>
-      </q-card>
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <q-card
+          :flat="!addBoardOpen"
+          class="add-board flex flex-center justify-center"
+          :class="{ '-active': addBoardOpen }"
+          @click.stop="addBoardOpen = true"
+        >
+          <q-card-section class="no-padding fit">
+            <template v-if="!addBoardOpen">Add a board...</template>
+            <template v-else>
+              <q-form
+                class="q-gutter-md column"
+                @submit="createNewBoard"
+              >
+                <q-input
+                  ref="input"
+                  v-model="newBoardName"
+                  required
+                  autofocus
+                  label="Board name"
+                  filled
+                />
+                <q-input
+                  v-model="newBoardBackgroundImage"
+                  label="Background Image"
+                  filled
+                />
+                <q-btn
+                  type="submit"
+                  color="primary"
+                  size="md"
+                  label="Submit"
+                />
+              </q-form>
+            </template>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
