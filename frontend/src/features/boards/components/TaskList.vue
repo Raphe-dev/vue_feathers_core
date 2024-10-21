@@ -1,46 +1,52 @@
 <script setup lang="ts">
-import { uid } from "uid";
-import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import type { ServiceInstance } from "feathers-pinia";
+import type { Columns as ColumnsType } from "project-template-backend/lib/services/columns/columns.schema";
+import type { Tasks as TasksType } from "project-template-backend/lib/services/tasks/tasks.schema";
 
-import { state } from "@/modules/store";
-import { Board, Column } from "@f/boards/types";
+import { computed, ref } from "vue";
+
+import { useFeathersService } from "@/feathers-client";
 import { formatTimeSince } from "@f/utils/date";
 
-const input = ref();
-const route = useRoute();
-const newTasklistOpen = ref(false);
-const newTaskContent = ref("");
+const column = defineModel<ServiceInstance<ColumnsType>>({ required: true });
 
-const list = defineModel<Column>({ required: true });
-const board = computed<Board>(() => state.boards[route.params.id.toString()]);
-const since = computed<string>(() => formatTimeSince(new Date(list.value.createdAt || Date.now())));
+const Tasks = useFeathersService("tasks");
+Tasks.find({ query: { column_id: column.value._id } });
+
+const tasks = computed<ServiceInstance<TasksType>[]>(
+  () => Tasks.findInStore({ query: { column_id: column.value._id } }).data,
+);
+
+const input = ref();
+
+const newTasklistOpen = ref(false);
+const newTask = ref(Tasks.new({ column_id: column.value._id }));
+const resetNewTask = (): void => (newTask.value = Tasks.new({ column_id: column.value._id }));
+
+const since = computed<string>(() => formatTimeSince(new Date(Date.now())));
 
 const addTaskList = (): void => {
-  const id: string = uid();
-  list.value.tasks[id] = {
-    id: id,
-    order: Object.keys(list.value.tasks).length + 1,
-    content: newTaskContent.value,
-  };
-  newTaskContent.value = "";
+  newTask.value.order = tasks.value.length + 1;
+  newTask.value.createInStore();
+  newTask.value.save();
+  resetNewTask();
   input.value.focus();
 };
 
 const deleteTaskList = (): void => {
-  delete board.value.columns[list.value.id];
+  column.value.remove();
 };
 </script>
 
 <template>
   <q-card
     class="tasklist"
-    :style="`backgroundColor: ${list.color || ''}`"
+    :style="`backgroundColor: ${column.color || ''}`"
   >
     <q-card-section class="q-pa-sm">
       <div class="row items-center justify-between">
         <div class="text-subtitle1 auto-invert">
-          {{ list.name }}
+          {{ column.name }}
         </div>
 
         <q-btn
@@ -65,7 +71,7 @@ const deleteTaskList = (): void => {
               </q-item>
               <q-item
                 clickable
-                :style="`backgroundColor: ${list.color || ''}`"
+                :style="`backgroundColor: ${column.color || ''}`"
               >
                 <q-item-section avatar>
                   <q-icon
@@ -74,19 +80,22 @@ const deleteTaskList = (): void => {
                   />
                 </q-item-section>
 
-                <q-item-section :style="`backgroundColor: ${list.color || ''}`">
+                <q-item-section :style="`backgroundColor: ${column.color || ''}`">
                   <q-item-label />
 
                   <q-item-label
                     class="auto-invert"
                     caption
                   >
-                    {{ list.color || `Background Color` }}
+                    {{ column.color || `Background Color` }}
                   </q-item-label>
                 </q-item-section>
 
                 <q-popup-proxy>
-                  <q-color v-model="list.color" />
+                  <q-color
+                    v-model="column.color"
+                    @change="column.save()"
+                  />
                 </q-popup-proxy>
               </q-item>
 
@@ -113,8 +122,8 @@ const deleteTaskList = (): void => {
 
     <q-card-section class="q-gutter-sm">
       <q-card
-        v-for="{ id, content } in list.tasks"
-        :key="id"
+        v-for="{ _id, content } in tasks"
+        :key="`task-${_id}`"
         class="q-pa-xs"
       >
         {{ content }}
@@ -129,13 +138,14 @@ const deleteTaskList = (): void => {
         >
           <q-input
             ref="input"
-            v-model="newTaskContent"
+            v-model="newTask.content"
             required
             autofocus
             label="Card content"
             filled
           />
           <q-btn
+            :loading="newTask.isSavePending"
             color="primary"
             type="submit"
             label="Submit"

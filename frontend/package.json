@@ -23,6 +23,7 @@
     "pinia": "^2.1.7",
     "quasar": "^2.14.2",
     "socket.io-client": "^4.7.4",
+    "project-template-backend": "file:../backend/public/project-template-backend-0.1.6.tgz",
     "uid": "^2.0.2",
     "vue": "^3.4.15",
     "vue-i18n": "^10.0.0"

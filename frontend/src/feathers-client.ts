@@ -1,7 +1,8 @@
-import authenticationClient from "@feathersjs/authentication-client";
-import { feathers, type FeathersService } from "@feathersjs/feathers";
+//import authenticationClient from "@feathersjs/authentication-client";
+//import { feathers, type FeathersService } from "@feathersjs/feathers";
 import socketio from "@feathersjs/socketio-client";
-import { createPiniaClient } from "feathers-pinia";
+import { createPiniaClient, useInstanceDefaults } from "feathers-pinia";
+import { createClient } from "project-template-backend";
 import io from "socket.io-client";
 
 import { pinia } from "./modules/pinia";
@@ -9,9 +10,11 @@ import { pinia } from "./modules/pinia";
 const host = (import.meta.env.VITE_MY_API_URL as string) || "http://localhost:3030";
 const socket = io(host, { transports: ["websocket"] });
 
-export const feathersClient = feathers<Record<string, FeathersService>>()
-  .configure(socketio(socket))
-  .configure(authenticationClient({ storage: window.localStorage }));
+// export const feathersClient = feathers<Record<string, FeathersService>>()
+//   .configure(socketio(socket))
+//   .configure(authenticationClient({ storage: window.localStorage }));
+
+export const feathersClient = createClient(socketio(socket), { storage: window.localStorage });
 
 export const api = createPiniaClient(feathersClient, {
   pinia,
@@ -29,7 +32,29 @@ export const api = createPiniaClient(feathersClient, {
   customizeStore() {
     return {};
   },
-  services: {},
+  services: {
+    boards: {
+      setupInstance(data) {
+        return useInstanceDefaults(
+          {
+            backgroundImage: "https://picsum.photos/200/200",
+          },
+          data,
+        );
+      },
+    },
+    columns: {
+      setupInstance(data) {
+        return useInstanceDefaults(
+          {
+            created_at: Date.now().toLocaleString(),
+            color: "#fff",
+          },
+          data,
+        );
+      },
+    },
+  },
 });
 
 export function useFeathers() {

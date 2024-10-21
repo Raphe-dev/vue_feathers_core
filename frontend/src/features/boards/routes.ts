@@ -10,6 +10,11 @@ export default [
         component: () => import("./components/BoardsIndex.vue"),
       },
       {
+        name: "boards-index-v2",
+        path: "v2",
+        component: () => import("./components/BoardsIndexV2.vue"),
+      },
+      {
         name: "boards-show",
         path: "/boards/:id",
         props: true,

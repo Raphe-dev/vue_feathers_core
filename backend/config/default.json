@@ -9,7 +9,7 @@
     "default": 999,
     "max": 999
   },
-  "mongodb": "mongodb://127.0.0.1:27017/backend",
+  "mongodb": "mongodb://localhost:27017/backend",
   "authentication": {
     "entity": "user",
     "service": "users",

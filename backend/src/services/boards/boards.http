@@ -1,0 +1,31 @@
+
+DELETE http://localhost:3030/boards/6705757659948d231f0f3134
+Accept: application/json
+
+###
+GET http://localhost:3030/boards/6705757659948d231f0f3134
+Accept: application/json
+
+###
+###
+PATCH http://localhost:3030/boards/670579e4269cbcaca816d630
+Content-Type: application/json
+
+{
+  "columns": ["67057a21ba537f1f31ca141d"]
+}
+
+###
+POST http://localhost:3030/boards
+Content-Type: application/json
+
+{
+  "name": "test io 3",
+  "backgroundImage": "https://picsum.photos/1200/900"
+}
+
+###
+### GET request to example server
+GET http://localhost:3030/boards
+
+###

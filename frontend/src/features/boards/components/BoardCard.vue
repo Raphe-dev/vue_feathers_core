@@ -1,15 +1,21 @@
 <script setup lang="ts">
+import type { Boards } from "project-template-backend";
+
+import { ServiceInstance } from "feathers-pinia";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
-import { state } from "@/modules/store";
-import { Board } from "@f/boards/types";
 import { formatTimeSince } from "@f/utils/date";
+
 const router = useRouter();
 
-const board = defineModel<Board>({ required: true });
+const board = defineModel<ServiceInstance<Boards>>({ required: true });
 
-const since = computed<string>(() => formatTimeSince(new Date(board.value.createdAt)));
+const since = computed<string>(() => {
+  // TODO Cast as Number because Typebox type is TNumber, which is not recognized by formatTimeSince
+  if (board?.value?.createdDate) return formatTimeSince(board.value.createdDate as number);
+  return "Unknown date";
+});
 </script>
 
 <template>
@@ -17,9 +23,9 @@ const since = computed<string>(() => formatTimeSince(new Date(board.value.create
     v-ripple.early="{ color: 'grey-1' }"
     transition-hide="slide-right"
     class="board-card cursor-pointer"
-    @click="router.push({ name: 'boards-show', params: { id: board.id } })"
+    @click="router.push({ name: 'boards-show', params: { id: board._id?.toString() } })"
   >
-    <img
+    <q-img
       :src="board.backgroundImage"
       :alt="`${board.name}-cover-img`"
       class="board-card__img"
@@ -30,15 +36,21 @@ const since = computed<string>(() => formatTimeSince(new Date(board.value.create
         <q-avatar
           size="md"
           color="primary"
-        />
+        >
+          <img
+            src="https://picsum.photos/100/100"
+            alt="avatar"
+          />
+        </q-avatar>
         <span>{{ since }}</span>
       </div>
       <q-btn
+        :loading="board.isRemovePending"
         round
         padding="xs"
         color="red"
         icon="delete"
-        @click.stop="() => delete state.boards[board.id]"
+        @click.stop="board.remove()"
       />
     </q-card-section>
   </q-card>

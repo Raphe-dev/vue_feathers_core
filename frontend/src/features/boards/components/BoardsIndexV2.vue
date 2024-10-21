@@ -2,26 +2,19 @@
 import type { ServiceInstance } from "feathers-pinia";
 import type { Boards } from "project-template-backend";
 
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 import { useFeathersService } from "@/feathers-client";
+import { useFindCustom, useFindResults } from "@f/boards/composables";
+const BoardsService = useFeathersService("boards");
 
 import BoardCard from "./BoardCard.vue";
 
-const BoardsService = useFeathersService("boards");
-
-BoardsService.find();
-
-const pageSize = ref(8);
-const boards$ = BoardsService.useFind(
-  { query: { $limit: pageSize, $skip: pageSize } },
-  { paginateOn: "hybrid" },
-);
-const boards = computed<ServiceInstance<Boards>[]>(() => BoardsService.findInStore({ query: {} }).data);
+const boards: useFindResults = useFindCustom({ query: {} });
 
 const onInfinite = async (index, done): Promise<void> => {
-  if (boards$.canNext) await boards$.next();
-  else if (boards.value.length === boards$.total) done(true);
+  if (boards.canNext) await boards.next();
+  else if (boards.data.length === boards.total) done(true);
   done();
 };
 
@@ -47,7 +40,7 @@ const createNewBoard = (): void => {
       :offset="10"
       @load="onInfinite"
     >
-      <template v-if="!boards.length">
+      <template v-if="!boards.data.length">
         <div
           v-for="i in 8"
           :key="i"
@@ -76,11 +69,11 @@ const createNewBoard = (): void => {
         leave-active-class="animated fadeOut"
       >
         <div
-          v-for="({}, key) in boards"
+          v-for="({}, key) in boards.data"
           :key="key"
-          class="col-xs-12 col-sm-6 col-md-3"
+          class="col-xs-12 col-sm-6 col-md-4"
         >
-          <board-card v-model="boards[key]" />
+          <board-card v-model="boards.data[key]" />
         </div>
       </transition-group>
 

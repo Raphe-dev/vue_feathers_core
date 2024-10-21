@@ -1,41 +1,42 @@
 <script setup lang="ts">
-import { uid } from "uid";
+import type { ServiceInstance } from "feathers-pinia";
+import type { Columns } from "project-template-backend";
+
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { state } from "@/modules/store";
-import { Board } from "@f/boards/types";
+import { useFeathersService } from "@/feathers-client";
 
 import TaskListComponent from "./TaskList.vue";
-
 const router = useRouter();
-
 const props = defineProps<{ id: string }>();
+
+const BoardsService = useFeathersService("boards");
+const ColumnsService = useFeathersService("columns");
+
+BoardsService.find({ query: { _id: props.id } });
+ColumnsService.find({ query: { board_id: props.id } });
+
+const board = BoardsService.getFromStore(props.id);
+
+const columns = ColumnsService.useFind({ query: { board_id: props.id } });
+
 const input = ref();
-
-const board = computed<Board>(() => state.boards[props.id]);
-
 const addListOpen = ref<boolean>(false);
-
-let newListName = ref<string>("");
+const newColumn = ref<ServiceInstance<Columns>>(ColumnsService.new({ board_id: props.id }));
+const resetNewList = (): void => (newColumn.value = ColumnsService.new({ board_id: props.id }));
 
 const createNewList = (): void => {
-  const id: string = uid();
-  board.value.columns[id] = {
-    id: id,
-    name: newListName.value,
-    tasks: {},
-    createdAt: Date.now(),
-    color: "#fff",
-  };
-  newListName.value = "";
+  newColumn.value.createInStore();
+  newColumn.value.save();
+  resetNewList();
   input.value.focus();
 };
 </script>
 
 <template>
   <q-page
-    :style="{ backgroundImage: `url(${board.backgroundImage})` }"
+    :style="{ backgroundImage: `url(${board?.backgroundImage || ''})` }"
     class="bg-cover column flex-start text-center"
     @click="addListOpen = false"
   >
@@ -43,16 +44,16 @@ const createNewList = (): void => {
       class="bar q-pa-md cursor-pointer"
       @click="router.push({ name: 'boards-index' })"
     >
-      {{ board.name }}
+      {{ board?.name }}
     </div>
 
     <div class="row q-col-gutter-md q-pa-md">
       <div
-        v-for="(list, key) in board.columns"
+        v-for="({}, key) in columns.data"
         :key="key"
         class="col-xs-12 col-sm-6 col-md-3"
       >
-        <task-list-component v-model="board.columns[key]" />
+        <task-list-component v-model="columns.data[key]" />
       </div>
 
       <div class="col-xs-12 col-sm-6 col-md-3">
@@ -71,13 +72,15 @@ const createNewList = (): void => {
               >
                 <q-input
                   ref="input"
-                  v-model="newListName"
+                  v-model="newColumn.name"
                   required
                   autofocus
                   label="List name"
                   filled
                 />
                 <q-btn
+                  :disabled="newColumn.isSavePending"
+                  :loading="newColumn.isSavePending"
                   type="submit"
                   color="primary"
                   size="md"
