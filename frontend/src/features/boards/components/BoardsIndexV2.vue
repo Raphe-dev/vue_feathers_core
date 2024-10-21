@@ -14,7 +14,7 @@ const BoardsService = api.service("boards");
 
 const boards: useFindResults = useFindCustom({ query: {} });
 
-const onInfinite = async (index, done): Promise<void> => {
+const onInfinite = async (index: number, done: (end?: boolean) => {}): Promise<void> => {
   if (boards.canNext) await boards.next();
   else if (boards.data.length === boards.total) done(true);
   done();
