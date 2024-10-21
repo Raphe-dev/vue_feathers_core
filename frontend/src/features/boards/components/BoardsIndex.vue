@@ -4,11 +4,13 @@ import type { Boards } from "project-template-backend";
 
 import { computed, ref } from "vue";
 
-import { useFeathersService } from "@/feathers-client";
+import { useFeathers } from "@/feathers-client";
 
 import BoardCard from "./BoardCard.vue";
 
-const BoardsService = useFeathersService("boards");
+const { api } = useFeathers();
+
+const BoardsService = api.service("boards");
 
 BoardsService.find();
 

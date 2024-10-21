@@ -4,11 +4,13 @@ import type { Boards } from "project-template-backend";
 
 import { ref } from "vue";
 
-import { useFeathersService } from "@/feathers-client";
+import { useFeathers } from "@/feathers-client";
 import { useFindCustom, useFindResults } from "@f/boards/composables";
-const BoardsService = useFeathersService("boards");
 
 import BoardCard from "./BoardCard.vue";
+const { api } = useFeathers();
+
+const BoardsService = api.service("boards");
 
 const boards: useFindResults = useFindCustom({ query: {} });
 
