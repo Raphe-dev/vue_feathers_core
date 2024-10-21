@@ -3,7 +3,8 @@ import type { Boards } from "project-template-backend";
 import { Params, Query, ServiceInstance } from "feathers-pinia";
 import { computed, ComputedRef, Reactive, reactive, Ref, ref } from "vue";
 
-import { useFeathersService } from "@/feathers-client";
+import { useFeathers } from "@/feathers-client";
+const { api } = useFeathers();
 const BoardsService = useFeathersService("boards");
 
 export type useFindResults = Reactive<{
@@ -24,7 +25,7 @@ export const useFindCustom = (params: Params<Query>, pageSize?: Ref<number>): us
     const response = await BoardsService.find({ ...params, query });
     total.value = response.total;
   };
-  const data: ComputedRef<ServiceInstance<Boards>> = computed<ServiceInstance<Boards>[]>(
+  const data: ComputedRef<ServiceInstance<Boards>[]> = computed<ServiceInstance<Boards>[]>(
     () => BoardsService.findInStore(params).data,
   );
 
