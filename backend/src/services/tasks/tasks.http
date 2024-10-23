@@ -1,0 +1,33 @@
+
+DELETE http://localhost:3030/tasks/67056dc1ed54f3caf714503d
+Accept: application/json
+
+###
+GET http://localhost:3030/tasks/67056dc1ed54f3caf714503d
+Accept: application/json
+
+###
+###
+PATCH http://localhost:3030/tasks/67057accba537f1f31ca141e
+Content-Type: application/json
+
+{
+  "done": true,
+  "order": 3
+}
+
+###
+POST http://localhost:3030/tasks
+Content-Type: application/json
+
+{
+  "content": "job3",
+  "todo_id": "67057a21ba537f1f31ca141d",
+  "order": 3
+}
+
+###
+### GET request to example server
+GET http://localhost:3030/tasks
+
+###

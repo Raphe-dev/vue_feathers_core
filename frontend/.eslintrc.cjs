@@ -72,6 +72,7 @@ module.exports = {
         // Enforce proper slot names, but allow modifiers for Vuetify. e.g. table.slot-name
         "vue/valid-v-slot": ["error", { "allowModifiers": true }],
         "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         // conflicts with prettier
         "vue/singleline-html-element-content-newline": "off",
         // Ensure consistent case for

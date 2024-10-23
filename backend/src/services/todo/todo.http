@@ -1,0 +1,50 @@
+
+DELETE http://localhost:3030/todo/67056ed1ed54f3caf7145040
+Accept: application/json
+
+###
+GET http://localhost:3030/todo/67056dc1ed54f3caf714503d
+Accept: application/json
+
+###
+###
+PATCH http://localhost:3030/todo/67057cbe6743c7fd0429652a
+Content-Type: application/json
+
+{
+  "tasks_array": [
+    {
+      "id": "1",
+      "content": "some text",
+      "order": 1,
+      "done": false
+    },
+    {
+      "id": "2",
+      "content": "some text 2",
+      "order": 2,
+      "done": false
+    },
+    {
+      "id": "3",
+      "content": "some text 3",
+      "order": 3,
+      "done": false
+    }
+  ]
+}
+
+###
+POST http://localhost:3030/todo
+Content-Type: application/json
+
+{
+  "name": "TodoList Array",
+  "board_id": "670579e4269cbcaca816d630"
+}
+
+###
+### GET request to example server
+GET http://localhost:3030/todo
+
+###
